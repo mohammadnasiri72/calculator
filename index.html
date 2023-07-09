@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator</title>
+    <style>
+        .main-box {
+            width: 300px;
+            height: 400px;
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+
+        .monitor {
+            width: 80%;
+            height: 50px;
+            border-radius: 10px;
+            margin: auto;
+            margin-top: 20px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .number-screen {
+            font-size: 25px;
+            background-color: dimgray;
+            border-radius: 5px;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+        }
+
+        .screen {
+            display: grid;
+            grid-template-columns: 50px 50px 50px 50px;
+            grid-template-rows: 50px 50px 50px 50px 50px;
+            grid-gap: 10px;
+            margin-top: 10px;
+            margin-left: 30px;
+        }
+
+        .off {
+            grid-column-start: 1;
+            grid-column-end: 4;
+        }
+
+
+
+        .equal {
+            grid-column-start: 3;
+            grid-column-end: 5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-box">
+        <input class="monitor" type="text">
+        <div class="screen">
+            <div class="number-screen off" data-number="off">off/on</div>
+            <div class="number-screen division" data-number="/">/</div>
+            <div class="number-screen one" data-number="1">1</div>
+            <div class="number-screen two" data-number="2">2</div>
+            <div class="number-screen three" data-number="3">3</div>
+            <div class="number-screen star" data-number="*">*</div>
+            <div class="number-screen four" data-number="4">4</div>
+            <div class="number-screen five" data-number="5">5</div>
+            <div class="number-screen six" data-number="6">6</div>
+            <div class="number-screen plus" data-number="+">+</div>
+            <div class="number-screen seven" data-number="7">7</div>
+            <div class="number-screen eight" data-number="8">8</div>
+            <div class="number-screen nine" data-number="9">9</div>
+            <div class="number-screen negative" data-number="-">-</div>
+            <div class="number-screen ziro" data-number="0">0</div>
+            <div class="number-screen auditor" data-number=".">.</div>
+            <div class="number-screen equal" data-number="=">=</div>
+        </div>
+    </div>
+    <script>
+        var monitor = document.querySelector(".monitor")
+        var num = document.querySelectorAll(".number-screen")
+        var off = document.querySelector(".off")
+        var patern1 = /(\w+(\.\w+)?)(\/)([+-]?\w+(\.\w+)?)/g
+        var patern2 = /(\w+(\.\w+)?)(\*)([+-]?\w+(\.\w+)?)/g
+        num.forEach(e => {
+            e.addEventListener("click", function (ev) {
+                if (ev.target.dataset.number == '=') {
+                    var a = monitor.value.indexOf("+", 1)
+                    var b = monitor.value.indexOf("-", 1)
+                    var c = monitor.value.indexOf("*")
+                    var d = monitor.value.indexOf("/")
+                    var x = 0
+                    var y = 0
+                    var z = 0
+                    var w = 0
+
+                    while (d != -1) {
+
+
+                        x = monitor.value.search(patern1)
+
+                        monitor.value = monitor.value.replace(monitor.value.slice(x, d) + "/" + parseFloat(monitor.value.slice(d + 1)), parseFloat(monitor.value.slice(x, d)) / parseFloat(monitor.value.slice(d + 1)))
+                        monitor.value = monitor.value.replace("--" , "")
+                        a = monitor.value.indexOf("+", 1)
+                        b = monitor.value.indexOf("-", 1)
+                        c = monitor.value.indexOf("*")
+                        d = monitor.value.indexOf("/")
+                    }
+                    while (c != -1) {
+                        y = monitor.value.search(patern2)
+
+                        monitor.value = monitor.value.replace(monitor.value.slice(y, c) + "*" + parseFloat(monitor.value.slice(c + 1)), parseFloat(monitor.value.slice(y, c)) * parseFloat(monitor.value.slice(c + 1)))
+                        monitor.value = monitor.value.replace("--" , "")
+                        a = monitor.value.indexOf("+", 1)
+                        b = monitor.value.indexOf("-", 1)
+                        c = monitor.value.indexOf("*")
+                        d = monitor.value.indexOf("/")
+
+                    }
+                    while (a != -1 || b != -1) {
+
+                      if (monitor.value.indexOf("+") == 0) {
+                        monitor.value = monitor.value.slice(1)
+                      }
+
+                        var alamat = (monitor.value.replace(parseFloat(monitor.value), "")).slice(0, 1)
+
+                        if (alamat == "+") {
+                            monitor.value = monitor.value.replace(parseFloat(monitor.value) + "+" + parseFloat(monitor.value.slice(a + 1)), parseFloat(monitor.value) + parseFloat(monitor.value.slice(a + 1)))
+                            a = monitor.value.indexOf("+", 1)
+                            b = monitor.value.indexOf("-", 1)
+
+
+                        } else if (alamat == "-") {
+                            monitor.value = monitor.value.replace(parseFloat(monitor.value) + "-" + parseFloat(monitor.value.slice(b + 1)), parseFloat(monitor.value) - parseFloat(monitor.value.slice(b + 1)))
+                            a = monitor.value.indexOf("+", 1)
+                            b = monitor.value.indexOf("-", 1)
+
+
+                        }
+
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    //  while (b!= -1) {
+                    //     var patern3 = /(\S+)(\s)(\-|\+)(\s)(\S+)/g
+                    //     console.log(z)
+                    //     console.log(b)
+                    //     console.log(monitor.value)
+                    //      z =  monitor.value.search(patern3)
+                    //         monitor.value=  monitor.value.replace(monitor.value.slice(z , b-1) + " - " + parseFloat(monitor.value.slice(b+2)) , parseFloat(monitor.value.slice(z , b-1)) - parseFloat(monitor.value.slice(b+2)))
+                    //     a = monitor.value.indexOf("+")
+                    //     b = monitor.value.search("- ")
+                    //     c = monitor.value.indexOf("*")
+                    //     d = monitor.value.indexOf("/")
+
+
+
+                    //  }
+                    //  while (a!= -1) {
+                    //     var patern4 = /(\w+)(\s)(\+)(\s)(\w+)/g
+                    //      w =  monitor.value.search(patern4)
+                    //     monitor.value=  monitor.value.replace(monitor.value.slice(w , a-1) + " + " + parseFloat(monitor.value.slice(a+2)) , parseFloat(monitor.value.slice(w , a-1))+parseFloat(monitor.value.slice(a+2)))
+                    //     a = monitor.value.indexOf("+")
+                    //     b = monitor.value.search("- ")
+                    //     c = monitor.value.indexOf("*")
+                    //     d = monitor.value.indexOf("/")
+                    //  }
+
+
+
+                    //    monitor.value =  monitor.value.replace( patern , `${parseFloat("$1") + "$3"}`)
+
+                    // while (d!= -1) {
+                    // while (parseFloat(monitor.value.slice(d-i , d)) != NaN) {
+                    //    x = monitor.value.slice(d-i , d)
+                    //    i++
+                    // }
+
+                    //         if (d-c < d-b && d-c < d-a) {
+
+                    //         monitor.value=  monitor.value.replace(monitor.value.slice(c+1 , d) + "/" + parseFloat(monitor.value.slice(d+1)) , monitor.value.slice(c+1 , d)/parseFloat(monitor.value.slice(d+1)))
+
+                    //   } else if (d-b< d-c && d-b < d-a) {
+                    //       monitor.value=  monitor.value.replace(monitor.value.slice(b+1 , d) + "/" + parseFloat(monitor.value.slice(d+1)) , monitor.value.slice(b+1 , d)/parseFloat(monitor.value.slice(d+1)))
+
+                    //   }else if (d-a < d-c && d-a < d-b) {
+                    //       monitor.value=  monitor.value.replace(monitor.value.slice(a+1 , d) + "/" + parseFloat(monitor.value.slice(d+1)) , monitor.value.slice(a+1 , d)/parseFloat(monitor.value.slice(d+1)))
+
+                    //   }else if (d-c == d-b && d-c == d-a) {
+                    //     monitor.value=  monitor.value.replace(monitor.value.slice(0 , d) + "/" + parseFloat(monitor.value.slice(d+1)) , monitor.value.slice(0 , d)/parseFloat(monitor.value.slice(d+1)))
+                    //   }
+                    // a = monitor.value.indexOf("+")
+                    // b = monitor.value.indexOf("-")
+                    // c = monitor.value.indexOf("*")
+                    // d = monitor.value.indexOf("/")
+                    // console.log(monitor.value)
+                    //     }
+
+
+
+                }
+                else if (ev.target.dataset.number == '+' || ev.target.dataset.number == '-' || ev.target.dataset.number == '*' || ev.target.dataset.number == '/') {
+
+                    monitor.value += ev.target.dataset.number
+
+
+
+
+
+                    console.log(monitor.value)
+                } else if (ev.target.dataset.number == 'off') {
+                    monitor.value = ""
+                }
+                else {
+                    monitor.value += ev.target.dataset.number
+                    console.log(monitor.value)
+                }
+
+            })
+        })
+
+
+    </script>
+</body>
+
+</html>
